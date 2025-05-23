@@ -1,0 +1,21 @@
+<p>favorito works!</p>
+<h1>Productos Favoritos
+</h1>
+
+<div class="card-container">
+  
+      <ng-container *ngFor="let item of agregarfavorito; let i = index">
+        <div class="card">  
+        <img [src]="item.producto.imagen" alt="{{ item.producto.nombre }}"  >
+        <h2>{{item.producto.nombre}}</h2>
+        <p>{{item.producto.descripcion}}</p>
+        <p>Precio: {{item.producto.precio}}</p>
+        <td>
+            <button class="btn btn-outilne-primary" (click)="eliminarfav(item.producto.id)">Eliminar</button>
+        </td>
+     </div>
+      </ng-container>
+       
+
+      
+    </div>
