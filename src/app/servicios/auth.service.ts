@@ -6,9 +6,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-// URL base de modulo de usuario en la api
-private apiUrl='http://localhost/api_proyecto/public/users'
-  constructor(private http:HttpClient) { }
+      // URL base de modulo de usuario en la api
+    private apiUrl='http://localhost/api_proyecto/public/users';
+
+  constructor(private http:HttpClient) { }  
   //enviar los credencciales y retorna la respuesta
   login(datos:any):Observable<any>{
     return this.http.post(`${this.apiUrl}/login`,datos);

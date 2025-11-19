@@ -28,7 +28,7 @@ export class IniciosesionComponent {
   ){}
 
   //Envia las credenciales al backend e inicia la sesion sison validas
-  iniciaSesion(){
+  iniciarSesion(){
     this.error=null;
     this.cargando=true,
     this.authService.login(this.usuario).subscribe({
