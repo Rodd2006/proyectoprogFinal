@@ -16,14 +16,66 @@
         </div>
       </div>
 -->
-<div class="card-container">
-  <ng-container *ngIf="Productos && Productos.length">
-    <ng-container *ngFor="let producto of Productos">
-      <div *ngIf="producto.disponibilidad" class="card">
-        <img [src]="producto.imagen" alt="{{producto.nombre}}" class="product-image">
+<div class="filtros">
+    <div class="row mb-3">
+      <div class="col md-3">
+        <label>Categoria:</label>
+        <select class="form-select" [(ngModel)]="selectedCategory" name="categoria">
+          <option value="">Todas</option>
+          <option *ngFor="let categoria of categories" [value]="categoria"> {{categoria}}</option>
+        </select>
+      </div>
 
-        <label class="container">
 
+      <div class="col-md-3">
+        <label>Marca</label>
+        <select class="form-select" [(ngModel)]="selectedBrand" name="marca">
+          <option value="">Todas</option>
+          <option *ngFor="let marca of marca" [value]="marca">{{marca}}</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <label>Precio min:</label>
+        <input type="number" class="form-control" [(ngModel)]="minprecio" name="minprecio">
+      </div>
+
+      <div class="col-md-2">
+        <label>Precio max:</label>
+        <input type="number" class="form-control" [(ngModel)]="maxprecio" name="maxprecio">
+      </div>
+
+      <div class="col-md-2 d-flex aling-item-end">
+        <button class="btn btn-secondary w-100" (click)="resetFilters()">
+          <div class="button-top">Limpiar</div>
+        </button>
+      </div>
+
+
+    </div>
+
+    <div class="card-container">
+      <ng-container *ngIf="filteredProducts && filteredProducts.length" >
+        <ng-container *ngFor="let producto of filteredProducts" >
+          <div *ngIf="producto.disponibilidad"  class="card">
+           <div id="carousel-{{producto.id}}" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active" *ngIf="producto.imagen">
+        <img [src]="producto.imagen" class="d-block w-100" alt="Imagen principal">
+      </div>
+      <div class="carousel-item" *ngIf="producto.imagen2">
+        <img [src]="producto.imagen2" class="d-block w-100" alt="Imagen secundaria">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel-' + producto.id" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel-' + producto.id" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+  <label class="container">
+<!--Favorito-->
           <input type="checkbox" id="favoriteButton" (click)="fav(producto)">
           <h2> {{producto.nombre}} </h2> <svg height="24px" id="Layer_1" version="1.2" viewBox="0 0 24 24" width="24px"
             xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -38,14 +90,22 @@
           </svg>
          
         </label>
-        <p>{{producto.descripcion}}</p>
-        <p>Precio: {{producto.precio}}</p>
+            <p>{{producto.descripcion}}</p>
+            <p>Precio:{{producto.precio}}</p>
+            <p>Cantidad:{{producto.cantidad}}</p>
+            <p>Categoria:{{producto.categoria}}</p>
+            <p>Marca: {{producto.marca}}</p>
+            
 
-        <button type="button" class="btn btn-outilne-primary" (click)="agregar(producto)" routerLink="/carrito">Agregar
+            <button type="button" class="btn btn-outilne-primary"  (click)="agregar(producto)" routerLink="/carrito">Agregar
           al carrito</button>
+              
+          </div> 
+        </ng-container>
+      </ng-container>
+    </div>
 
-      </div>
-    </ng-container>
-  </ng-container>
+    <div *ngIf="filteredProducts.length === 0" class="text-muted"> 
+      No se encontraron Productos que coincidan con el filtro
+    </div>
 </div>
-<!-- <button type="button" class="boton-img" (click)="fav(producto)" routerLink="/favorito"><img src="est.png" height="20" width="20"> </button> -->

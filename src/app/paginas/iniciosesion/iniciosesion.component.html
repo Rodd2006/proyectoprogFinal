@@ -1,0 +1,54 @@
+<!--Contenedor principal del formulario conmargen superior y un ancho maximo-->
+<div class="container mt-5" style="max-width: 400px;">
+
+<!--titulo centrado del formulario-->
+<h2 class="texte-center mb-4">Iniciar Sesion</h2>
+<!-- Formulario de inicio sesion -->
+<!-- El evento (ngSubmit) ejecuta la funcion iniciarSesion() enviar el formulario-->
+</div>
+<form (ngSubmit)="iniciarSesion()">
+    <!-- Campo para el correo electronico-->
+     <div class="mb-3">
+        <!--etiqueta asociado al campo de email -->
+   
+
+    <label for="email" class="form-label">Correo electronico--</label>
+    <!-- input del tio de mail-->
+     <!--[(ngModel)] Vincula el valor del campo con la propiedad usuario.email del componente-->
+     <!-- name="email" es necesario para que angular reconozca el contro dentro del formulario-->
+      <!--required obliga a completar el campo antes de enviar -->
+        <input 
+        type="email"
+        id="email"
+        class="form-control"
+        [(ngModel)]="usuario.email"
+        name="email"
+        required
+        />
+    </div>
+    <!--Campo para la contraseña -->
+    <div class="mb-3">
+        <!--Etiqueta asociada al campo de contraseña -->
+        <label for="password" class="form-label">Contraseña</label>
+        <!-- input de tipo password-->
+        <!-- oculta caracteres al escribir -->
+        <!-- [(ngModel)] vincula el valor del campo con la propiedad usuario.password del componente-->
+         <!-- required obliga a completa el campo -->
+          <input 
+          type="password" 
+          name="password" 
+          id="password"
+          class="form-control" 
+          [(ngModel)]="usuario.password" 
+          required/>
+    </div>
+    <!--boton para enviar el formulario -->
+    <!-- type="submit" activa el evento ngSubmit-->
+    <!-- btn btn-primary aplica el estilo azul de bootstrap-->
+    <!-- w-100 hace que el boton ocupe todo el ancho del contenido-->
+    <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+</form>
+<!-- mensaje de error-->
+<!--ngIf="erro" muestra el parrafo solo si existe un valor en la variable erro -->
+<!-- text danger aplica el color rojo,mt-3 agrega margen superior y text center centra el text-->
+ <p *ngIf="error" class="text-danger mt-3 texte-center"> {{error}}  </p>

@@ -5,6 +5,10 @@ export interface Producto{
     precio:number;
     preciodesc:number
     imagen:string;
+    imagen2:string;
     disponibilidad:boolean;
     cantidad?:number;   
+    categoria:string;
+    marca:string;
+
    }

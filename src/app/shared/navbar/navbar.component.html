@@ -1,38 +1,36 @@
-<p>navbar works!</p>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<div class="body"> 
+<nav class="navbar navbar-expand-lg ">
   <nav class="navbar bg-body-tertiary">
-  <div class="container">
-    <a class="navbar-brand" href="#">
-      <img src="https://png.pngtree.com/png-clipart/20210328/original/pngtree-the-online-shop-logo-uses-a-colorful-house-concept-png-image_6151588.jpg" width="70" height="70">
-    </a>
-  </div>
 </nav>
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Inicio</a>
+      <a class="navbar-brand" href="#">
+        <img src="logo.png" width="70" height="70">Inicio
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
           </li>
            <li class="nav-item">
-            <a class="nav-link" routerLink="/contacto">Contacto</a>
+            <a class="nav-link" routerLink="/contacto"><strong>Contacto</strong></a>
           </li>
          <li class="nav-item">
-          <a class="nav-link" routerLink="/producto">Producto</a>
+          <a class="nav-link" routerLink="/producto"><strong> Producto</strong> </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/oferta">Ofertas</a>
+          <a class="nav-link" routerLink="/oferta"><strong>Ofertas</strong> </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/carrito">Carrito</a> 
+          <a class="nav-link" routerLink="/carrito"><strong>Carrito </strong></a> 
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/quienessomos">Nosotros</a>
+          <a class="nav-link" routerLink="/quienessomos"><strong> Nosotros</strong></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/favorito">Favoritos
+          <a class="nav-link" routerLink="/favorito"><strong>Favoritos   </strong>
             </a>
         </li>
         </ul>
@@ -41,8 +39,8 @@
           <button class="btn btn-outline-success" type="submit"></button>
         </form>
         
-          <li>
-            <a routerLink="/carrito">
+          <li><a routerLink="/carrito">
+            <img src="bolsa.png" alt="" height="50px" width="50px">
               <i class="bi bi-cart"></i>
               <span *ngIf="cantidadProductos > 0 "></span>
               {{cantidadProductos}}
@@ -53,3 +51,4 @@
       </div>
     </div>
   </nav>
+  </div>

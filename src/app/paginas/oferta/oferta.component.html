@@ -1,4 +1,3 @@
-<p>oferta works!</p>
 
 <!--
 <div>
@@ -17,11 +16,32 @@
         </div>
       </div>
 -->
+      <!-- Pruebas-->
+       <body> 
 <div class="card-container">
   <ng-container *ngIf="Productos && Productos.length">
     <ng-container *ngFor="let producto of Productos">
       <div *ngIf="producto.disponibilidad" class="card">
-        <img [src]="producto.imagen" alt="{{producto.nombre}}" class="product-image">
+
+        <!--Carrusel -->
+        <div id="carousel-{{producto.id}}" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active" *ngIf="producto.imagen">
+        <img [src]="producto.imagen" class="d-block w-100" alt="Imagen principal">
+      </div>
+      <div class="carousel-item" *ngIf="producto.imagen2">
+        <img [src]="producto.imagen2" class="d-block w-100" alt="Imagen secundaria">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel-' + producto.id" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel-' + producto.id" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+
 
         <label class="container">
 
@@ -41,7 +61,7 @@
         </label>
         <p>{{producto.descripcion}}</p>
         
-        <p> Precio : <br> Antes: <s>  {{producto.precio}} </s> Ahora : {{producto.preciodesc}}</p>
+        <p> Precio : Antes: <s>  {{producto.precio}} </s> <br>Ahora : {{producto.preciodesc}}</p>
 
         <button type="button" class="btn btn-outilne-primary" (click)="agregar(producto)" routerLink="/carrito">Agregar
           al carrito</button>
@@ -51,3 +71,4 @@
   </ng-container>
 </div>
 <!-- <button type="button" class="boton-img" (click)="fav(producto)" routerLink="/favorito"><img src="est.png" height="20" width="20"> </button> -->
+ </body>
