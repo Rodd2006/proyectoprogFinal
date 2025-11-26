@@ -14,9 +14,11 @@ import { json } from 'stream/consumers';
   templateUrl: './iniciosesion.component.html',
   styleUrl: './iniciosesion.component.css'
 })
-export class IniciosesionComponent {
+export class IniciosesionComponent {  
   //Datos capturados desde el formulario de login
-  usuario={email:'',password:''};
+  usuario={email:'',
+          password:''
+        };
 
   //variables para mostrar mensajes de error y estados de carga
   error: string|null=null;
@@ -24,6 +26,7 @@ export class IniciosesionComponent {
 
   constructor(
     private authService:AuthService,
+    //redirecciona luego de iniciar sesion
     private router:Router
   ){}
 

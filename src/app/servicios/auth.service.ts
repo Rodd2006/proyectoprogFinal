@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable, EventEmitter, Inject, PLATFORM_ID} from '@angular/core';
+import { Observable, tap } from 'rxjs';
+import { isPlatformBrowser  } from '@angular/common';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,17 +11,54 @@ export class AuthService {
       // URL base de modulo de usuario en la api
     private apiUrl='http://localhost/api_proyecto/public/users';
 
-  constructor(private http:HttpClient) { }  
+      // Indica si el código corre en navegador (true) o en servidor (false, en SSR).
+       private isBrowser: boolean;
+
+    // Evento que notifica al resto de la aplicación que el usuario inició sesión.
+    // El NavComponent lo escucha para actualizar usuario + carrito.
+    private loginSubject = new Subject<void>();
+  loginEvent$ = this.loginSubject.asObservable();
+
+
+  constructor(private http:HttpClient,
+    // PLATFORM_ID permite saber si estamos en entorno browser o server-side.
+    @Inject(PLATFORM_ID) private platformId: Object)  { 
+  // Determina si estamos en navegador para permitir el uso de localStorage.
+    this.isBrowser = isPlatformBrowser(this.platformId);}  
   //enviar los credencciales y retorna la respuesta
-  login(datos:any):Observable<any>{
-    return this.http.post(`${this.apiUrl}/login`,datos);
 
+
+ login(credentials: { email: string; password: string }): Observable<any> {
+
+    // Envía las credenciales al backend.
+    return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
+
+      // tap() permite ejecutar código colateral sin modificar la respuesta.
+      tap((response: any) => {
+
+        // Si hay token válido y estamos en navegador:
+        if (response?.token && this.isBrowser) {
+
+          // Guarda token en localStorage para mantener sesión.
+          localStorage.setItem('token', response.token);
+
+          // Guarda datos del usuario para usarlos en la app.
+          localStorage.setItem('usuario', JSON.stringify(response.usuario));
+
+          // Emite un evento global para que otros componentes reaccionen.
+          // El NavComponent escucha este evento para recargar usuario y carrito.
+          this.loginSubject.next();
+        }
+      })
+    );
   }
+
   //envia los datos del nuevo usuario al backend para registrar una cuenta
- register(datos:any):Observable<any>{
-    return this.http.post(`${this.apiUrl}/register`,datos);
-
+  register(usuario: { nombre: string; email: string; password: string; rol?: string }): Observable<any> {
+    // Envía datos del nuevo usuario al backend.
+    return this.http.post(`${this.apiUrl}/register`, usuario);
   }
+
 // guarda el token y el rol del usuario en el almacenamiento local
 guardarSesion(token:string,rol:string){
   localStorage.setItem('token',token);
