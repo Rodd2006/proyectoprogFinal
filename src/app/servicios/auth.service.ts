@@ -11,6 +11,7 @@ export class AuthService {
       // URL base de modulo de usuario en la api
     private apiUrl='http://localhost/api_proyecto/public/users';
 
+
       // Indica si el código corre en navegador (true) o en servidor (false, en SSR).
        private isBrowser: boolean;
 
@@ -30,28 +31,29 @@ export class AuthService {
 
  login(credentials: { email: string; password: string }): Observable<any> {
 
-    // Envía las credenciales al backend.
-    return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
+  return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
+    tap((response: any) => {
 
-      // tap() permite ejecutar código colateral sin modificar la respuesta.
-      tap((response: any) => {
+      if (response?.token && this.isBrowser) {
 
-        // Si hay token válido y estamos en navegador:
-        if (response?.token && this.isBrowser) {
+        // Guarda el token
+        localStorage.setItem('token', response.token);
 
-          // Guarda token en localStorage para mantener sesión.
-          localStorage.setItem('token', response.token);
+        // Guarda el usuario completo (ID, nombre, email, rol)
+        localStorage.setItem('usuario', JSON.stringify({
+          id: response.id,
+          nombre: response.nombre,
+          email: response.email,
+          rol: response.rol
+        }));
 
-          // Guarda datos del usuario para usarlos en la app.
-          localStorage.setItem('usuario', JSON.stringify(response.usuario));
+        // Notifica a la app que inició sesión
+        this.loginSubject.next();
+      }
+    })
+  );
+}
 
-          // Emite un evento global para que otros componentes reaccionen.
-          // El NavComponent escucha este evento para recargar usuario y carrito.
-          this.loginSubject.next();
-        }
-      })
-    );
-  }
 
   //envia los datos del nuevo usuario al backend para registrar una cuenta
   register(usuario: { nombre: string; email: string; password: string; rol?: string }): Observable<any> {

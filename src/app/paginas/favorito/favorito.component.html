@@ -11,6 +11,8 @@
         <p>Precio: {{item.producto.precio}}</p>
         <td>
             <button class="btn btn-outilne-primary" (click)="eliminarfav(item.producto.id)">Eliminar</button>
+             <button type="button" class="btn btn-outilne-primary"  (click)="agregar(item.producto)" routerLink="/carrito">Agregar
+          al carrito</button>
         </td>
      </div>
       </ng-container>
