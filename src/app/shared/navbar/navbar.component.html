@@ -1,62 +1,100 @@
-<div class="body"> 
-<nav class="navbar navbar-expand-lg ">
-  <nav class="navbar bg-body-tertiary">
-</nav>
+<div class="body">
+  <nav class="navbar navbar-expand-lg ">
+    <nav class="navbar bg-body-tertiary">
+    </nav>
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" routerLink="/">
         <img src="logo.png" width="70" height="70">Inicio
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        
+
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
           </li>
-           <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" routerLink="/contacto"><strong>Contacto</strong></a>
           </li>
-         <li class="nav-item">
-          <a class="nav-link" routerLink="/producto"><strong> Producto</strong> </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/oferta"><strong>Ofertas</strong> </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/carrito"><strong>Carrito </strong></a> 
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/quienessomos"><strong> Nosotros</strong></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/favorito"><strong>Favoritos   </strong>
-            </a>
-        </li> 
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/registro"><strong>Registro  </strong>
-            </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/iniciosesion"><strong>Inicio Sesion   </strong>
-            </a>
-        </li>
-        </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Busqueda" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit"></button>
-        </form>
-        
-          <li><a routerLink="/carrito">
-            <img src="bolsa.png" alt="" height="50px" width="50px">
-              <i class="bi bi-cart"></i>
-              <span *ngIf="cantidadProductos > 0 "></span>
-              {{cantidadProductos}}
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/producto"><strong> Producto</strong> </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/oferta"><strong>Ofertas</strong> </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/carrito"><strong>Carrito </strong></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/quienessomos"><strong> Nosotros</strong></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/favorito"><strong>Favoritos </strong>
             </a>
           </li>
-          
-        
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/registro"><strong>registro
+              </strong>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/iniciosesion"><strong>Inicio Sesion </strong>
+            </a>
+          </li>
+        </ul>
+
+<nav class="navbar navbar-expand-lg ">
+ 
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+
+    <!-- ========== USUARIO LOGUEADO ========== -->
+    <ul class="navbar-nav">
+
+      <!-- Cuando el usuario ESTÁ logueado -->
+      <li class="nav-item dropdown" *ngIf="usuario">
+        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+          <!-- Muestra el nombre del usuario -->
+          👤 {{ usuario.nombre }}
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-end">
+  
+          <li><hr class="dropdown-divider"></li>
+          <li><button class="dropdown-item" (click)="cerrarSesion()">Cerrar sesión</button></li>
+        </ul>
+      </li>
+
+      <!-- Cuando NO está logueado -->
+      <li class="nav-item" *ngIf="!usuario">
+        <a class="botonIni" routerLink="/iniciosesion" >Iniciar sesión  </a>
+      </li>
+    </ul>
+
+  </div>
+</nav>
+
+
+
+        <li class="carro"><a routerLink="/carrito">
+            <img src="bolsa.png" alt="" height="50px" width="50px" >
+            <i class="bi bi-cart"> </i>
+           
+          </a> 
+           <span *ngIf="cantidadProductos > 0 " class="ms-2"> 
+            {{cantidadProductos}}
+            </span>
+
+        </li>
+
+
       </div>
     </div>
   </nav>
-  </div>
+</div>

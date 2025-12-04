@@ -1,10 +1,11 @@
 
 <div class="card-container">
+  
   <ng-container *ngIf="Productos && Productos.length">
     <ng-container *ngFor="let producto of Productos">
       <div *ngIf="producto.disponibilidad" class="card">
         <img [src]="producto.imagen" alt="{{producto.nombre}}" class="product-image" >
-
+          
         <label class="container">
 
           <input type="checkbox" id="favoriteButton" (click)="fav(producto)">

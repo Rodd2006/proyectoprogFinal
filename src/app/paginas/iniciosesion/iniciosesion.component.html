@@ -5,8 +5,14 @@
 <h2 class="text-center mb-4 fw-bold">Iniciar Sesion</h2>
 <!-- Formulario de inicio sesion -->
 <!-- El evento (ngSubmit) ejecuta la funcion iniciarSesion() enviar el formulario-->
+ <div *ngIf="mensaje" class="alert alert-success">   
+     {{ mensaje }}
+</div>
 
 <form (ngSubmit)="iniciarSesion()">
+
+        
+   
     <!-- Campo para el correo electronico-->
      <div class="mb-3">
         <!--etiqueta asociado al campo de email -->
@@ -47,6 +53,7 @@
     <!-- w-100 hace que el boton ocupe todo el ancho del contenido-->
     <button type="submit" class="btn btn-primary w-100">Ingresar</button>
     
+
 </form>
 </div>
 <!-- mensaje de error-->
