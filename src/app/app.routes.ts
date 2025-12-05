@@ -10,6 +10,7 @@ import { CalzadoComponent } from './paginas/calzado/calzado.component';
 import { CompraComponent } from './paginas/compra/compra.component';
 import { IniciosesionComponent } from './paginas/iniciosesion/iniciosesion.component';
 import { RegistroComponent } from './paginas/registro/registro.component';
+import { ComprasComponent } from './paginas/compras/compras.component';
 
 export const routes: Routes = [
     {path:'',redirectTo:'/inicio',pathMatch:"full"},
@@ -23,5 +24,6 @@ export const routes: Routes = [
     {path:'calzado',component:CalzadoComponent},
     {path:'compra',component:CompraComponent},
     {path:'iniciosesion',component:IniciosesionComponent},
-    {path:'registro',component:RegistroComponent}
+    {path:'registro',component:RegistroComponent},
+    {path:'compras',component:ComprasComponent}
 ];

@@ -7,6 +7,8 @@ import { CarritoService } from '../../../servicios/carrito.service';
 import { NOMEM } from 'dns';
 import { url } from 'inspector';
 import { create } from 'domain';
+import { CompraService } from '../../servicios/compra.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-compra',
@@ -16,28 +18,35 @@ import { create } from 'domain';
   styleUrl: './compra.component.css'
 })
 export class CompraComponent implements OnInit {
+  productos: any[] = [];  
   //Declaracion del formulario reactivo para la compra 
   formularioCompra!: FormGroup;
   //variable para almacenar el total de la compra(subtotal+envio)
-  total!: number
-
+  total=0;  
+  // Datos adicionales que el usuario debe completar (pueden usarse más adelante en el futuro).
+  datos = { direccion: '', telefono: '' };
   //costo fijo de envio 
   envio = 5000
   //indicador para saber si la factura ya fue generada
   facturaGenerada = false
+subtotal = 0;
+  // Costo fijo de envío.
 
   //objeto que contiene la informacion de la factura generada 
   factura: any
   //controla la visibilidad del modal que muestre el pdf
   mostrarModal = false
-
+mensaje = '';
+  cargando = false;
   //fuente segura para mostrar el pdf mostrado en el iframe(estilizado)
   pdfSrc: SafeResourceUrl | undefined;
 
   constructor(
     private fb: FormBuilder, //FormBuild para crear el formulario activo
     private carritoService: CarritoService, // servicio para manejar el carrito y obtener productos y total 
-    private sanitizer: DomSanitizer//para sanitizar la url del pdf y que angular lo permita mostr                                                           ar
+    private sanitizer: DomSanitizer,//para sanitizar la url del pdf y que angular lo permita mostr                                                           ar
+    private compraService: CompraService,
+    private router: Router
   ) { }
 
 
@@ -52,37 +61,72 @@ export class CompraComponent implements OnInit {
       ciudad: ['', Validators.required],
       provincia: ['', Validators.required],
       metodoPago: ['', Validators.required],
-
+      
     })
+
+    // Se suscribe al carrito en tiempo real:
+    // si se modifica el carrito en cualquier parte de la app,
+    // este componente vuelve a calcular los totales.
+    this.carritoService.carrito$.subscribe(items => {
+      this.productos = items;
+      this.calcularTotales();
+    });
   }
-  //calcula el total de la compra sumando el subtotal y el costo de envio
-  calcularTotal(): number {
-    const subtotal = this.carritoService.obtenerTotal(); //obtiene el subtotal del carrito
-    this.total = subtotal + this.envio
-    return this.total
+   calcularTotales() {
+
+    // Toma cada producto y multiplica precio_unitario * cantidad.
+    this.subtotal = this.productos.reduce((acc, p) => {
+      const precio = Number(p.precio_unitario) || 0;
+      const cantidad = Number(p.cantidad) || 1;
+      return acc + (precio * cantidad);
+    }, 0);
+
+    // Total = subtotal + costo de envío.
+    this.total = Number(this.subtotal) + Number(this.envio);
   }
   //Prepara los datos para la factura con cliente,productos,total y fecha
-  emitirFactura(): void {
-    const datosCliente = this.formularioCompra.value; //datos ingresados
-    const productos = this.carritoService.obtenerProductos() //productos del carrito
-    const totalFinal = this.calcularTotal() // Total calculado con  envio
-
-
-    //construye el objeto factura con toda la info 
-    this.factura = { cliente: datosCliente, productos: productos, envio: this.envio, total: totalFinal, fecha: new Date() };
-    //marca la factura que fue generada
-    this.facturaGenerada = true;
-
-  }
+  
   //metodo que se ejecuta al finalizar la compra (click al boton)
   //identifica validez del formulario,genera factura y muestra pdf
-  finalizarCompra(): void {
+  finalizarCompra() {
     if (this.formularioCompra.valid) {
-      this.emitirFactura(); //crea la factura 
       this.generarPDFModal(); //genera y muestra el pdf en Modal 
     } else {
       this.formularioCompra.markAllAsTouched(); //marca todos los campos como tocados para mostrar errores
     }
+      const data = {
+      direccion: this.datos.direccion,
+      telefono: this.datos.telefono
+    };
+
+    // Marca estado de carga para bloquear UI si fuera necesario.
+    this.cargando = true;
+
+    // Llama al backend para crear la compra, generar ticket y vaciar el carrito.
+    this.compraService.finalizarCompra(data).subscribe({
+      next: res => {
+
+        // Mensaje informativo.
+        this.mensaje = 'Compra realizada con éxito';
+
+        // Vaciar carrito localmente y en backend.
+        this.carritoService.vaciarCarrito().subscribe();
+
+        // Navegar al ticket luego de 1 segundo (simula efecto visual).
+        setTimeout(() => {
+          this.router.navigate(['/ticket', res.id_compra]);
+        }, 1000);
+      },
+
+      // Si hubo error en el proceso:
+      error: err => {
+        console.error(err);
+        this.mensaje = 'Error al procesar compra.';
+        this.cargando = false;
+      }
+    });
+
+
 
   }
   //genera el pdf con jsPDF y crea la url para mostrar en iframes dentro del modal 

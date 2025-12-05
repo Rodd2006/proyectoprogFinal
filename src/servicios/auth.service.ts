@@ -19,7 +19,7 @@ loginSubject = new BehaviorSubject<boolean>(false);
     // Evento que notifica al resto de la aplicación que el usuario inició sesión.
     // El NavComponent lo escucha para actualizar usuario + carrito.
   
-    loginEvent$ = this.loginSubject.asObservable();
+    loginEvent = new EventEmitter<void>();
 
 
   constructor(private http:HttpClient,

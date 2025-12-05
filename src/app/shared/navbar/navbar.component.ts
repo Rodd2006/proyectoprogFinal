@@ -36,13 +36,26 @@ export class NavbarComponent implements OnInit {
     this.authService.loginSubject.subscribe(() => {
       this.usuario = this.authService.getUsuario();
     });
+     if (this.authService.loginEvent) {
+      this.authService.loginEvent.subscribe(() => {
+        this.usuario = this.authService.getUsuario();
+        this.carritoService.cargarCarrito();
+      });
+    }
+
   }
 
   cerrarSesion() {
     this.authService.logout();
   }
   
+
+
+  
  onCarrito(){
   console.log('Carrito clicked');
- }
+ }    
+// Si el usuario se loguea después de cargar el componente,
+    // se vuelve a obtener el usuario y se recarga el carrito del backend.
+    
 }
