@@ -1,64 +1,83 @@
-<h1 class="text-center my-4">carrito de compras</h1>
-<!-- Un If que realiza un mensaje si es que hay un producto o no -->
-<div *ngIf="productoEnCarrito.length === 0 " class="alert alert-warning text-center">
-    <p>No hay productos en el carrito</p>
-</div>
-<div *ngIf="productoEnCarrito.length > 0" class="container">
+<div class="container mt-4">
 
-    <table class="table table-hover table-bordered align-middle text-center">
-        <thead>
-            <tr>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Descripcion</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Precio Final </th>
-            </tr>
-        </thead>
-        <!-- NgFor que recorre los productos para mostrarlos  -->
-        <tbody>
-            <tr *ngFor="let item of productoEnCarrito; let i = index">
-                <td>
-                    <img [src]="item.producto.imagen" alt="{{ item.producto.nombre }}" class="img-thumbnail"
-                        style="width: 50px; height: 50px;">
-                </td>
-                <td class="fw-bold"> {{ item.producto.nombre }}</td>
-                <td> {{ item.producto.descripcion }}</td>
-                <td> {{ item.producto.preciodesc }}</td>
+  <h2 class="mb-3">Carrito de compras</h2>
 
-                <td>
-                    <div class="btn-group" role="group" aria-label="cantidad">
-                        <button class="btn2 btn-outline-danger btn-sm" (click)="quitarCantidad(i)"> - </button>
-                        {{item.cantidad }}
-                        <button  class="btn2 btn-outline-danger btn-sm" (click)="agregarCantida(i)"> + </button>
-                    </div>
-                </td>
+  <div *ngIf="carrito.length > 0; else vacio">
 
-                <td> {{ item.producto.preciodesc * item.cantidad }}</td>
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th>Subtotal</th>
+          <th></th>
+        </tr>
+      </thead>
 
-                <td align="center">
-                    <!-- From Uiverse.io by vinodjangid07 -->
-                    <button class="button"  (click)="eliminarProducto(item.producto.id)">
-                        <svg viewBox="0 0 448 512" class="svgIcon">
-                            <path
-                                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z">
-                            </path>
-                        </svg>
-                    </button>
-                    
-                       
-                </td>
-            </tr>
-        </tbody>
+      <tbody>
+        <tr *ngFor="let item of carrito">
+          
+          <!-- Imagen -->
+          <td>
+            <img *ngIf="item.imagen"
+                 [src]="'http://localhost/api_proyecto/public/uploads/' + item.imagen"
+                 class="thumb" />
+          </td>
+
+          <!-- Nombre -->
+          <td>
+            <strong>{{ item.nombre }}</strong>
+          </td>
+
+          <!-- Precio -->
+          <td>$ {{ item.precio_unitario }}</td>
+
+          <!-- Cantidad (editable) -->
+          <td>
+            <input type="number"
+                   min="1"
+                   class="form-control"
+                   [value]="item.cantidad"
+                   (change)="cambiarCantidad(item.id_detalle_carrito, $event)">
+          </td>
+
+          <!-- Subtotal -->
+          <td>$ {{ item.subtotal }}</td>
+
+          <!-- Eliminar -->
+          <td>
+            <button class="btn btn-danger btn-sm"
+                    (click)="eliminar(item.id_detalle_carrito)">
+              Eliminar
+            </button>
+          </td>
+
+        </tr>
+      </tbody>
     </table>
 
-    <div class="text-end" *ngIf="productoEnCarrito.length > 0">
-        <h4 class="fw-bold">Total: {{calcularTotal()}}</h4>
-        <button class="btn btn-primary mt-2" (click)="irAformularioCompra()">
-            <i class="bi bi-cart-check"></i>Realizar Compra
-        </button>   
+    <div class="text-end mt-4">
+      <p>Subtotal: <strong>$ {{ total }}</strong></p>
+      <p>Envío: <strong>$ {{ envio }}</strong></p>
+      <p>Total: <strong>$ {{ total + envio }}</strong></p>
+
+      <button class="btn btn-outline-danger me-2" (click)="vaciarCarrito()">
+        Vaciar carrito
+      </button>
+
+      <button class="btn btn-primary" (click)="irACompra()">
+        Finalizar compra
+      </button>
     </div>
+
+  </div>
+
+  <ng-template #vacio>
+    <div class="alert alert-info text-center">
+      Tu carrito está vacío.
+    </div>
+  </ng-template>
+
 </div>
-
-

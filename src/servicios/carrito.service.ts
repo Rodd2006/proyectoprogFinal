@@ -10,6 +10,7 @@ export class CarritoService {
   // URL base del backend para las rutas del carrito.
   private apiUrl = 'http://localhost/api_proyecto/public/carrito';
 
+
   // BehaviorSubject almacena el estado actual del carrito de forma reactiva.
   // Cualquier componente suscrito se actualiza automáticamente cuando cambia.
   private carritoSubject = new BehaviorSubject<any[]>([]);
@@ -36,10 +37,12 @@ export class CarritoService {
   // ===============================================================
   // OBTENER CARRITO DESDE LA API
   // ===============================================================
-  obtenerCarrito(): Observable<any[]> {
-    // Llama al endpoint GET /carrito
-    return this.http.get<any[]>(this.apiUrl, this.getHeaders());
-  }
+ obtenerCarrito(): Observable<any[]> {
+  console.log("HEADERS ENVIADOS:", this.getHeaders());
+
+  return this.http.get<any[]>(this.apiUrl, this.getHeaders());
+}
+
 
   // ===============================================================
   // CARGA INICIAL DEL CARRITO AL INICIAR LA APP O EL NAV
@@ -67,26 +70,16 @@ export class CarritoService {
   // ===============================================================
   // AGREGAR PRODUCTO AL CARRITO
   // ===============================================================
-  agregarAlCarrito(producto: any): Observable<any> {
+ agregarAlCarrito(producto: any): Observable<any> {
+  return this.http.post<any>(
+    `${this.apiUrl}/agregar`,
+    { id_producto: producto.id, cantidad: 1, precio_unitario: producto.precio },
+    this.getHeaders()
+  ).pipe(
+    tap(() => this.cargarCarrito()) // recarga el carrito desde backend
+  );
+}
 
-    // POST /carrito/agregar
-    return this.http.post<any>(
-      `${this.apiUrl}/agregar`,
-      {
-        id_producto: producto.id,
-        cantidad: 1,
-        precio_unitario: producto.precio
-      },
-      this.getHeaders()
-    ).pipe(
-      tap((r: any) => {
-        // Si la respuesta incluye carrito actualizado, se propaga el cambio.
-        if (r?.carrito) {
-          this.carritoSubject.next(r.carrito);
-        }
-      })
-    );
-  }
 
   // ===============================================================
   // ACTUALIZAR CANTIDAD DE UN ÍTEM DEL CARRITO
