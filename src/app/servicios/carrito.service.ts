@@ -71,12 +71,20 @@ export class CarritoService {
   // AGREGAR PRODUCTO AL CARRITO
   // ===============================================================
  agregarAlCarrito(producto: any): Observable<any> {
+  console.log("Producto supuestamente agregado " + producto.nombre)
   return this.http.post<any>(
     `${this.apiUrl}/agregar`,
     { id_producto: producto.id, cantidad: 1, precio_unitario: producto.precio },
     this.getHeaders()
   ).pipe(
-    tap(() => this.cargarCarrito()) // recarga el carrito desde backend
+    
+    // tap(() => this.cargarCarrito()) // recarga el carrito desde backend
+    tap((r: any) => {
+        // Si la respuesta incluye carrito actualizado, se propaga el cambio.
+        if (r?.carrito) {
+          this.carritoSubject.next(r.carrito);
+        }
+      })
   );
 }
 

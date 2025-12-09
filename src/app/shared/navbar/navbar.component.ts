@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CarritoService } from '../../../servicios/carrito.service';
+import { CarritoService } from '../../servicios/carrito.service';
 import { Producto } from '../../modelos/producto.models';
 import { CommonModule,} from '@angular/common';
 import { FavoritoService } from '../../../servicios/servicios/favorito.service';
-import { AuthService } from '../../../servicios/auth.service';
+import { AuthService } from '../../servicios/auth.service';
 
 
 @Component({

@@ -21,8 +21,8 @@
           
           <!-- Imagen -->
           <td>
-            <img *ngIf="item.imagen"
-                 [src]="'http://localhost/api_proyecto/public/uploads/' + item.imagen"
+            <img *ngIf="item"
+                 [src]="'http://localhost/api_proyecto/public/uploads/' + item.nombre"
                  class="thumb" />
           </td>
 

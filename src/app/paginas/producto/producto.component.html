@@ -53,15 +53,16 @@
 
 
     </div>
-
+<!-- card -->
     <div class="card-container">
       <ng-container *ngIf="filteredProducts && filteredProducts.length" >
         <ng-container *ngFor="let producto of filteredProducts" >
-          <div *ngIf="producto.disponibilidad"  class="card">
+        
+          <div *ngIf="producto"  class="card">
            <div id="carousel-{{producto.id}}" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active" *ngIf="producto.imagen">
-        <img [src]="producto.imagen" class="d-block w-100" alt="Imagen principal">
+        <img  [src]="'http://localhost/api_proyecto/public/uploads/' + producto.imagen"class="d-block w-100" alt="Imagen principal">
       </div>
       <div class="carousel-item" *ngIf="producto.imagen2">
         <img [src]="producto.imagen2" class="d-block w-100" alt="Imagen secundaria">

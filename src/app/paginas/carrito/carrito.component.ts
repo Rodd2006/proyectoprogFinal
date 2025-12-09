@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { CarritoService } from '../../../servicios/carrito.service';
+import { CarritoService } from '../../servicios/carrito.service';
 
 
 @Component({
@@ -41,7 +41,7 @@ export class CarritoComponent implements OnInit {
       next: (items: any[]) => {
         // En caso de respuesta válida, guardamos los ítems o un array vacío.
         this.carrito = items || [];
-
+        console.log(items)
         // Recalculamos el total del carrito.
         this.calcularTotal();
       },

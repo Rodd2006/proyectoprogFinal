@@ -1,7 +1,7 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../../servicios/auth.service';
+import { AuthService } from '../../servicios/auth.service';
 import { Route } from '@angular/router';
 import { response } from 'express';
 import { Router } from '@angular/router';

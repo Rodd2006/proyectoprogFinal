@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import jsPDF from 'jspdf'
-import { CarritoService } from '../../../servicios/carrito.service';
+import { CarritoService } from '../../servicios/carrito.service';
 import { NOMEM } from 'dns';
 import { url } from 'inspector';
 import { create } from 'domain';

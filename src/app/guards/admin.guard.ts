@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 // importa CanActivate (interfaz para proteger rutas) y Router (para redireccionar)
 import { CanActivate,Router } from "@angular/router";
 //importa el servicio de autenticacion que contiene una logica para verificar roles del usuario 
-import { AuthService } from "../../servicios/auth.service";
+import { AuthService } from "../servicios/auth.service";
 //declara la clase como inyectable y disponible en toda la aplicacion 
 @Injectable({providedIn:'root'})
 export class AdminGuard implements CanActivate{
