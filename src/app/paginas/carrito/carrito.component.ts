@@ -17,7 +17,7 @@ export class CarritoComponent implements OnInit {
   carrito: any[] = [];
 
   // Costo fijo de envío (puede parametrizarse más adelante).
-  envio: number = 1500;
+  envio: number = 5000;
 
   // Total acumulado del carrito (se recalcula cada vez que cambian los items).
   total: number = 0;

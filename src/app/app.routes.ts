@@ -11,6 +11,8 @@ import { CompraComponent } from './paginas/compra/compra.component';
 import { IniciosesionComponent } from './paginas/iniciosesion/iniciosesion.component';
 import { RegistroComponent } from './paginas/registro/registro.component';
 import { ComprasComponent } from './paginas/compras/compras.component';
+import { AdminComponent } from './paginas/admin/admin.component';
+import { AdminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
     {path:'',redirectTo:'/inicio',pathMatch:"full"},
@@ -25,5 +27,6 @@ export const routes: Routes = [
     {path:'compra',component:CompraComponent},
     {path:'iniciosesion',component:IniciosesionComponent},
     {path:'registro',component:RegistroComponent},
-    {path:'compras',component:ComprasComponent}
+    {path:'compras',component:ComprasComponent},
+    { path: 'admin',component: AdminComponent,canActivate: [AdminGuard]}
 ];

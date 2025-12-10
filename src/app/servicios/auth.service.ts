@@ -80,17 +80,36 @@ esAdmin():boolean{
 
 
 // Para obtener usuario actual desde cualquier componente
-getUsuario() {
-  if (typeof window !== 'undefined') {
-    const usuario = localStorage.getItem('usuario');
-    return usuario ? JSON.parse(usuario) : null;
+ getUsuario(): any {
+    if (!this.isBrowser) return null;
+
+    const raw = localStorage.getItem('usuario');
+
+    // Si no existe o es inválido, devolvemos null.
+    if (!raw || raw === 'undefined' || raw === 'null') {
+      return null;
+    }
+
+    // Intentamos parsear JSON del usuario guardado.
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      // Si el JSON está corrupto, limpiamos y devolvemos null.
+      console.warn('JSON inválido en usuario, limpiando storage');
+      localStorage.removeItem('usuario');
+      return null;
+    }
   }
-  return null;
-}
 
 logout() {
   localStorage.removeItem('usuario');
   localStorage.removeItem('token');
   this.loginSubject.next(false);
 }
+  isLoggedIn(): boolean {
+    // Retorna true si hay token guardado.
+    if (!this.isBrowser) return false;
+    return !!localStorage.getItem('token');
+  }
+
 }

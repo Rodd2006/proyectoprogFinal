@@ -41,12 +41,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/iniciosesion"><strong>Inicio Sesion </strong>
-            </a>
+
+            <a routerLink="/compras" routerLinkActive="active" class="nav-link"><strong>Compras </strong> </a>
           </li>
-          <li class="nav-item">
-          </li>
-          <a routerLink="/compras" routerLinkActive="active" class="nav-link"><strong>Compras </strong> </a>
+          <li class="nav-item" *ngIf="usuario?.rol === 'admin'">
+          <a routerLink="/admin" routerLinkActive="active" class="nav-link">
+            Admin
+          </a>
+        </li>
+          
         </ul>
 
 <nav class="navbar navbar-expand-lg ">
@@ -78,8 +81,18 @@
       <li class="nav-item" *ngIf="!usuario">
         <a class="botonIni" routerLink="/iniciosesion" >Iniciar sesión  </a>
       </li>
-    </ul>
+           <!-- SI ESTÁ LOGUEADO -->
+        <ng-container *ngIf="authService.isLoggedIn();">
+          
+          <!-- USUARIO (ya no se llama getUsuario() en el HTML) -->
+          <span class="user-label me-3">
+             ({{ usuario?.rol }})
+          </span>
+        </ng-container>
 
+
+    </ul>
+   
   </div>
 </nav>
 

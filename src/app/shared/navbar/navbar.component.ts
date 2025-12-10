@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
 
   cantidadProductos:number=0;
   cantidadFavoritos:number=0
-  constructor(private carritoService:CarritoService, private favoritoService:FavoritoService,private authService:AuthService ){}
+  constructor(private carritoService:CarritoService, private favoritoService:FavoritoService,public authService:AuthService ){}
   ngOnInit(): void {
     //escucha los cambios en el carrito para actualizar la cantidad total de produtos 
     this.carritoService.carrito$.subscribe((productos:{producto:Producto,cantidad:number}[])=>{
@@ -27,7 +27,9 @@ export class NavbarComponent implements OnInit {
     this.cantidadFavoritos=productos.reduce((total,item)=> total + item.cantidad,0)
     })
     })
-
+if (this.authService.isLoggedIn()) {
+      this.carritoService.cargarCarrito();
+    }
     
      // Cargar usuario al iniciar la página
     this.usuario = this.authService.getUsuario();
@@ -36,6 +38,8 @@ export class NavbarComponent implements OnInit {
     this.authService.loginSubject.subscribe(() => {
       this.usuario = this.authService.getUsuario();
     });
+
+
      if (this.authService.loginEvent) {
       this.authService.loginEvent.subscribe(() => {
         this.usuario = this.authService.getUsuario();

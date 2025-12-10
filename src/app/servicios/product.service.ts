@@ -37,11 +37,17 @@ export class ProductService {
 
   //Envia un nuevo producto al servidor usando FormData 
   //Esto permite incluir archivos de imagen en la solicitud
- addProduct(formdata:FormData):Observable<any>{
-  return this.http.post(this.apiURL,formdata,{
-    headers:this.getHeaders()
-  }).pipe(catchError(this.handleError))
- }
+ addProduct(formData: FormData): Observable<any> {
+    return this.http.post(
+      this.apiURL,
+      formData,
+      {
+        // Content-Type debe quedar vacío para que el navegador
+        // genere el multipart/form-data automáticamente.
+        headers: this.getAuthHeaders(false)
+      }
+    );
+  }
 
   //actualiza un producto segun su id
   //esta operaion esta protegida y requiere un token valido
@@ -54,11 +60,15 @@ export class ProductService {
 //elimina un producto segun su id esta operacion esta protegida y requiere token
 
 
-deleteProduct(id:number):Observable<any>{
-  return this.http.delete(`${this.apiURL}/${id}`,{
-      headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
-}
+  deleteProduct(id: number): Observable<any> {
+    return this.http.delete(
+      `${this.apiURL}/${id}`,
+      {
+        headers: this.getAuthHeaders()
+      }
+    );
+  }
+
 //manejo centralizado a errores para todas las solicitudes 
 //devuelve un mensaje legible en caso de fallo 
 private handleError(error:any){
@@ -69,4 +79,26 @@ private handleError(error:any){
   }
   return throwError(() => new Error(msg))
 }
+
+
+// ============================================================
+  // HEADERS DE AUTENTICACIÓN
+  // Si json=true → se agrega Content-Type: application/json
+  // Si json=false → se omite para enviar FormData
+  // ============================================================
+  private getAuthHeaders(json: boolean = true): HttpHeaders {
+    const token = (typeof localStorage !== 'undefined')
+      ? localStorage.getItem('token') || ''
+      : '';
+
+    // Siempre enviamos el token.
+    const headers: any = { Authorization: `Bearer ${token}` };
+
+    // Solo agregamos JSON cuando NO se envía FormData.
+    if (json) {
+      headers['Content-Type'] = 'application/json';
+    }
+
+    return new HttpHeaders(headers);
+  }
 }
